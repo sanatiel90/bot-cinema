@@ -1174,7 +1174,14 @@ supports-color@^5.3.0, supports-color@^5.5.0:
   dependencies:
     has-flag "^3.0.0"
 
-telegraf@^3.35.0:
+telegraf-command-parts@^1.0.3:
+  version "1.0.3"
+  resolved "https://registry.yarnpkg.com/telegraf-command-parts/-/telegraf-command-parts-1.0.3.tgz#d0e078d10ce3f68469b529e5ea3a76e42d5788b3"
+  integrity sha1-0OB40Qzj9oRptSnl6jp25C1XiLM=
+  dependencies:
+    telegraf "^3.1.0"
+
+telegraf@^3.1.0, telegraf@^3.35.0:
   version "3.35.0"
   resolved "https://registry.yarnpkg.com/telegraf/-/telegraf-3.35.0.tgz#edf454ef3239efa1b754c5cd24407d56863e586c"
   integrity sha512-C60rps0vEnKcg8ZwS3czwFRVUsq10tn+babK+ujdQeflX267yqB8sw4vVV7c7qCApccqI7sbCrBOPRVb2+4MoQ==

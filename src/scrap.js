@@ -20,10 +20,11 @@ const getResults = async () => {
 
     const $ = cheerio.load(html)
 
+    //elemento onde estão os dados das sessões
     const movieSessions = $('.movie-sessions')
 
     movieSessions.each((i, movie) => {
-
+        //título do filme
         const title = $(movie).find('.movie-info > .movie-info__description > .movie-info__title').text()
 
         const sessionsData = [];
@@ -32,9 +33,11 @@ const getResults = async () => {
 
         sessions.each((s, session) => {
 
+            //nome do cinema
             const theater = $(session).find('.sessions__cinema').text();
             const scheduleData = []
 
+            //horários
             let schedules = $(session).find('.label')
 
             schedules.each((x, sche) => {
