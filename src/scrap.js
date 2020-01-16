@@ -5,7 +5,7 @@ import cheerio from 'cheerio'
 const url = process.env.URL
 
 const getData = async () => {
-    //try catch
+    //add try catch
     const result = await axios.get(url)
     return result
 }

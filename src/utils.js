@@ -1,3 +1,4 @@
+//retorna data atual
 export function currentDate(){
     var data = new Date(),
         dia  = data.getDate().toString().padStart(2, '0'),
@@ -6,6 +7,7 @@ export function currentDate(){
     return dia+"/"+mes+"/"+ano;
 }
 
+//cria a msg com os filmes, com base nos resultados obtidos
 export function setMoviesResult(moviesArray){
     let msg = ''
     moviesArray.forEach(m => {
@@ -32,6 +34,7 @@ export function setMoviesResult(moviesArray){
     return msg;
 }
 
+//formata string de pesquisa informada para padronizar busca 
 export function formatSearch(searchStr){
     const result = String(searchStr).replace(/,/g, ' ')
     return removerAcentos(result)
