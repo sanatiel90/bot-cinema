@@ -1,15 +1,12 @@
 require('dotenv/config')
 const express = require('express')
 const Telegraf = require('telegraf')
-const commandParts = require('telegraf-command-parts');
 import getResults from './scrap'
-import { currentDate, setMoviesResult } from './utils'
+import { currentDate, setMoviesResult, removerAcentos, formatSearch } from './utils'
 
 const app = express()
 
 const bot = new Telegraf(process.env.BOT_TOKEN)
-
-app.use(commandParts())
 
 bot.start((ctx) => {
     let msg = `Bem vindo, ${ctx.chat.first_name}! \nUse o comando /filmes para receber a lista de filmes em cartaz em Fortaleza! \n`
@@ -53,7 +50,7 @@ bot.command('filmes', async (ctx) => {
 bot.hears(/\/filme/, async (ctx) => { 
     const params = ctx.message.text.split(' ')
     const movieArg = params.slice(1)
-    const movieSearch = String(movieArg).replace(/,/g, ' ')
+    const movieSearch = formatSearch(movieArg)
     
     if (movieSearch === null || movieSearch === ''){
         ctx.reply(`Por favor, me informe o nome do filme que você deseja assistir para que eu possa pesquisar!`)    
@@ -64,10 +61,12 @@ bot.hears(/\/filme/, async (ctx) => {
     const movieData = await getResults()
 
     //filtra de acordo com a pesquisa informada
-    const moviesFilter = movieData.filter(m => (
-        m.title.search(movieSearch) !== -1
-    ))
-    
+    const moviesFilter = movieData.filter(m => {
+        const title = removerAcentos(m.title)
+        return title.search(movieSearch) !== -1
+    })
+
+    let msg = '' 
     moviesFilter.length > 0 ?  
         msg = setMoviesResult(moviesFilter)  
         : 
@@ -76,20 +75,46 @@ bot.hears(/\/filme/, async (ctx) => {
     ctx.reply(msg, { parse_mode: 'HTML' })     
 })
 
+//comando iniciado por /cinema vai fazer busca por filmes num dado cinema
 bot.hears(/\/cinema/, async (ctx) => {
     const params = ctx.message.text.split(' ')
     const cinemaArg = params.slice(1)
-    const cinemaSearch = String(cinemaArg).replace(/,/g, ' ')
+    const cinemaSearch = formatSearch(cinemaArg) 
     
     if (cinemaSearch === null || cinemaSearch === ''){
         ctx.reply(`Por favor, me informe o nome do cinema para qual deseja ver as sessões!`)    
         return
     } 
         
-    ctx.reply(`Ok, você quer procurar por filmes no cinema ${cinemaSearch}!  `) 
+    //resultado do scrap de movies
+    const movieData = await getResults()
 
-    
+    //filtra filmes de um cinema de acordo com a pesquisa informada
+    const moviesFilter = movieData.filter(m => {
+        let match = false
+        m.sessionsData.filter(s => {
+            const theaterName = removerAcentos(s.theater)
+            //so adicionar as sessoes que pertecerem ao cinema informado
+            if(theaterName.search(cinemaSearch) !== -1){
+                match = true
+                return true
+            } else {
+                //apagando sessoes de outros cinemas
+                s.theater = ''
+                s.scheduleData = []
+                return false
+            }
+        })
+        if(match) return true //retorna apenas os movies do cinema informado
+    })
 
+    let msg = '' 
+    moviesFilter.length > 0 ?  
+        msg = setMoviesResult(moviesFilter)  
+        : 
+        msg = `Não foram encontrados cinemas com a pesquisa '${cinemaSearch}', por favor refine sua busca, ou acesse a listagem geral de filmes através do comando /filmes`;
+
+    ctx.reply(msg, { parse_mode: 'HTML' })     
 })
 
 bot.launch()
