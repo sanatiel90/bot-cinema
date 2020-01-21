@@ -1,6 +1,9 @@
+//trocando para usar require :/
 require('dotenv/config')
-import axios from 'axios'
-import cheerio from 'cheerio'
+//import axios from 'axios'
+//import cheerio from 'cheerio'
+const axios = require('axios')
+const cheerio = require('cheerio')
 
 const url = process.env.URL
 
@@ -66,7 +69,8 @@ const getResults = async () => {
 
 }
 
-export default getResults
+//export default getResults
+module.exports = getResults
 
 /*const moviess = [
     {

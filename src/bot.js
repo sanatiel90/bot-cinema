@@ -1,6 +1,9 @@
+//trocando para usar require :/
 const Telegraf = require('telegraf')
-import getResults from './scrap'
-import { currentDate, setMoviesResult, removerAcentos, formatSearch } from './utils'
+//import getResults from './scrap'
+const getResults = require('./scrap')
+//import { currentDate, setMoviesResult, removerAcentos, formatSearch } from './utils'
+const { currentDate, setMoviesResult, removerAcentos, formatSearch } = require('./utils')
 
 const bot = new Telegraf(process.env.BOT_TOKEN)
 
@@ -115,7 +118,7 @@ bot.hears(/\/cinema/, async (ctx) => {
     ctx.reply(msg, { parse_mode: 'HTML' })     
 })
 
-export default bot
+module.exports = bot
 
 
 //bot.on(/\/echo (.*)/, (ctx) =>  ctx.reply(`Pega a exata msg q a pessoa escreveu, e mostra em ${ctx.message.text} `))

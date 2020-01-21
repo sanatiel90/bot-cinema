@@ -1,9 +1,12 @@
 require('dotenv/config')
 const express = require('express')
-import bot from './bot'
+const bot = require('./bot')
+//import bot from './bot'
 
 const app = express()
 
+const port = process.env.PORT || 3333 
+
 bot.launch()
 
-app.listen(3333, () => console.log('Bot Lanched at 3333'))
+app.listen(port, () => console.log(`Bot Lanched at port ${port}`))
