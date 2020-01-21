@@ -10,7 +10,7 @@ const port = process.env.PORT || 3333
 bot.launch()
 
 app.get('/', (req, res) => {
-    res.send('Telegram Bot CinemaFortaleza rodando ^^')
+    res.send('Bot CinemaFortaleza rodando :D')
 })
 
 app.listen(port, () => console.log(`Bot Lanched at port ${port}`))
