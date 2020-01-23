@@ -21,8 +21,9 @@ bot.start((ctx) => {
 bot.command('filmes', async (ctx) => {
     const movieData = await getResults()
 
-    let msg = `<b>Filmes em cartaz hoje - ${currentDate()}</b>\n`
-    msg += '------------------\n'
+    let msgTit = `<b>Filmes em cartaz hoje - ${currentDate()}</b>\n`
+    msgTit += '------------\n'
+    let msg = ''
     movieData.forEach(m => {
         msg += `<b>${m.title}</b>\n`
 
@@ -41,10 +42,10 @@ bot.command('filmes', async (ctx) => {
             })
             msg += '\n'
         })
-        msg += '------------------\n'
+        msg += '------------\n'
     })
 
-    ctx.reply(msg, { parse_mode: 'HTML' })
+    ctx.reply(msgTit+msg, { parse_mode: 'HTML' })
 })
 
 /* /filme @nomeDoFilme  => faz busca por um filme em específico */
