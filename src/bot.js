@@ -22,7 +22,7 @@ bot.command('filmes', async (ctx) => {
     const movieData = await getResults()
 
     let msgTit = `<b>Filmes em cartaz hoje - ${currentDate()}</b>\n`
-    msgTit += '------------\n'
+    msgTit += '-----------\n'
     let msg = ''
     movieData.forEach(m => {
         msg += `<b>${m.title}</b>\n`
@@ -34,7 +34,7 @@ bot.command('filmes', async (ctx) => {
                 let piece = sc
 
                 if (piece.indexOf(':') === -1) {
-                    piece = `<b>${piece}</b> `
+                    piece = `<b>${piece}</b>:`
                 }
 
                 msg += piece + ' ';
@@ -42,7 +42,7 @@ bot.command('filmes', async (ctx) => {
             })
             msg += '\n'
         })
-        msg += '------------\n'
+        msg += '-----------\n'
     })
 
     ctx.reply(msgTit+msg, { parse_mode: 'HTML' })
