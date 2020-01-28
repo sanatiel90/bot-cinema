@@ -10,7 +10,7 @@ exports.currentDate = function (){
     return dia+"/"+mes+"/"+ano;
 }
 
-//cria a msg com os filmes, com base nos resultados obtidos
+//cria a msg com os filmes, com base nos resultados obtidos usando os comandos /filme e /cinema
 //export function setMoviesResult(moviesArray){
 exports.setMoviesResult = function(moviesArray){
     let msg = ''
@@ -24,7 +24,7 @@ exports.setMoviesResult = function(moviesArray){
                 let piece = sc
 
                 if (piece.indexOf(':') === -1) {
-                    piece = `<b>${piece}</b> `
+                    piece = `<b>${piece}</b>:`
                 }
 
                 msg += piece + ' ';
@@ -32,7 +32,7 @@ exports.setMoviesResult = function(moviesArray){
             })
             if(s.theater) msg += '\n'
         })
-        msg += '------------------\n'
+        msg += '-----------\n'
     })
 
     return msg;
