@@ -19,33 +19,61 @@ bot.start((ctx) => {
 
 /* /filmes => lista todos os filmes */
 bot.command('filmes', async (ctx) => {
+
     const movieData = await getResults()
 
-    let msgTit = `<b>Filmes em cartaz hoje - ${currentDate()}</b>\n`
-    msgTit += '-----------\n'
-    let msg = ''
+    let msg = `<b>Filmes em cartaz hoje - ${currentDate()}</b>\n`
+    msg += '-----------\n'
+
+    let msg2 = ''
     movieData.forEach(m => {
-        msg += `<b>${m.title}</b>\n`
+        //msg do telegram aceita no máximo 4096 caracteres
+        if(msg.length < 3300) { 
+            msg += `<b>${m.title}</b>\n`
 
-        m.sessionsData.forEach(s => {
-            msg += `- ${s.theater}\n`
+            m.sessionsData.forEach(s => {
+                msg += `- ${s.theater}\n`
 
-            s.scheduleData.forEach(sc => {
-                let piece = sc
+                s.scheduleData.forEach(sc => {
+                    let piece = sc
 
-                if (piece.indexOf(':') === -1) {
-                    piece = `<b>${piece}</b>:`
-                }
+                    if (piece.indexOf(':') === -1) {
+                        piece = `<b>${piece}</b>:`
+                    }
 
-                msg += piece + ' ';
+                    msg += piece + ' ';
 
+                })
+                msg += '\n'
             })
-            msg += '\n'
-        })
-        msg += '-----------\n'
+            msg += '-----------\n'
+
+        } else {
+            //caso a msg ja tenha passado de 3300 caracteres, utilizar msg2 para criar outra msg com o restante da informacao
+            msg2 += `<b>${m.title}</b>\n`
+
+            m.sessionsData.forEach(s => {
+                msg2 += `- ${s.theater}\n`
+
+                s.scheduleData.forEach(sc => {
+                    let piece = sc
+
+                    if (piece.indexOf(':') === -1) {
+                        piece = `<b>${piece}</b>:`
+                    }
+
+                    msg2 += piece + ' ';
+
+                })
+                msg2 += '\n'
+            })
+            msg2 += '-----------\n'
+        }
     })
 
-    ctx.reply(msgTit+msg, { parse_mode: 'HTML' }) 
+    ctx.reply(msg, { parse_mode: 'HTML' }) 
+    if(msg2 !== '')  ctx.reply(msg2, { parse_mode: 'HTML' }) 
+    
 })
 
 /* /filme @nomeDoFilme  => faz busca por um filme em específico */
