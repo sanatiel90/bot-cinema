@@ -67,13 +67,14 @@ bot.command('filmes', async (ctx) => {
                 })
                 msg2 += '\n'
             })
+
             msg2 += '-----------\n'
         }
     })
 
     ctx.reply(msg, { parse_mode: 'HTML' }) 
     if(msg2 !== '')  ctx.reply(msg2, { parse_mode: 'HTML' }) 
-    
+
 })
 
 /* /filme @nomeDoFilme  => faz busca por um filme em específico */
