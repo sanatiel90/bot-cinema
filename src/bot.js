@@ -24,28 +24,51 @@ bot.command('filmes', async (ctx) => {
     let msgTit = `<b>Filmes em cartaz hoje - ${currentDate()}</b>\n`
     msgTit += '-----------\n'
     let msg = ''
+    let msg2 = ''
     movieData.forEach(m => {
-        msg += `<b>${m.title}</b>\n`
+        if (msg.length < 600) {
 
-        m.sessionsData.forEach(s => {
-            msg += `- ${s.theater}\n`
+            msg += `<b>${m.title}</b>\n`
 
-            s.scheduleData.forEach(sc => {
-                let piece = sc
+            m.sessionsData.forEach(s => {
+                msg += `- ${s.theater}\n`
 
-                if (piece.indexOf(':') === -1) {
-                    piece = `<b>${piece}</b>:`
-                }
+                s.scheduleData.forEach(sc => {
+                    let piece = sc
 
-                msg += piece + ' ';
+                    if (piece.indexOf(':') === -1) {
+                        piece = `<b>${piece}</b>:`
+                    }
 
+                    msg += piece + ' ';
+
+                })
+                msg += '\n'
             })
-            msg += '\n'
-        })
-        msg += '-----------\n'
+            msg += '-----------\n' 
+        } else {
+            msg2 += `<b>${m.title}</b>\n`
+
+            m.sessionsData.forEach(s => {
+                msg2 += `- ${s.theater}\n`
+
+                s.scheduleData.forEach(sc => {
+                    let piece = sc
+
+                    if (piece.indexOf(':') === -1) {
+                        piece = `<b>${piece}</b>:`
+                    }
+
+                    msg2 += piece + ' ';
+
+                })
+                msg2 += '\n'
+            })
+            msg2 += '-----------\n' 
+        }
     })
 
-    ctx.reply(msgTit+msg, { parse_mode: 'HTML' }) 
+    ctx.reply(msgTit+msg+msg2, { parse_mode: 'HTML' }) 
 })
 
 /* /filme @nomeDoFilme  => faz busca por um filme em específico */
