@@ -45,7 +45,7 @@ bot.command('filmes', async (ctx) => {
         msg += '-----------\n'
     })
 
-    ctx.reply(msgTit+msg, { parse_mode: 'HTML' })
+    ctx.reply(msgTit+msg, { parse_mode: 'HTML' }) 
 })
 
 /* /filme @nomeDoFilme  => faz busca por um filme em específico */
